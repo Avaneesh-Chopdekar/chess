@@ -17,7 +17,11 @@ app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 app.use(express.json());
 
-app.use(cors())
+app.use(cors({ 
+  origin: ['http://localhost:3000', 'http://localhost:3001'],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+  credentials: true,  
+}))
 
 app.get('/api/v1/health-check', (req, res) => {
   res.send({ status: 'healthy' });
