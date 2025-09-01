@@ -5,9 +5,11 @@
 
 import express from 'express';
 import * as path from 'path';
-import { fromNodeHeaders, toNodeHandler } from "better-auth/node";
+import { toNodeHandler } from "better-auth/node";
 import cors from 'cors';
+import { WebSocketServer } from 'ws';
 import { auth } from "./auth";
+import { GameManager } from './game/manager';
 
 const app = express();
 
@@ -27,16 +29,21 @@ app.get('/api/v1/health-check', (req, res) => {
   res.send({ status: 'healthy' });
 });
 
- 
-app.get("/api/v1/auth/me", async (req, res) => {
- 	const session = await auth.api.getSession({
-      headers: fromNodeHeaders(req.headers),
-    });
-	return res.json(session);
-});
-
 const port = process.env.PORT || 3001;
 const server = app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}/api/v1`);
 });
+
+const wss = new WebSocketServer({ server });
+
+const gameManager = new GameManager()
+
+wss.on("connection", function connection(ws) {
+  gameManager.addUser(ws);
+
+  ws.on("close", () => {
+    gameManager.removeUser(ws);
+  });
+});
+
 server.on('error', console.error);
