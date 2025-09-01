@@ -1,4 +1,7 @@
 import './global.css';
+import { Inter } from "next/font/google";
+
+const fontSans = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: 'Welcome to Chess Game',
@@ -12,7 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className={`min-h-svh h-full scroll-smooth antialiased bg-neutral-50 text-neutral-950 ${fontSans.className}`}>{children}</body>
     </html>
   );
 }
