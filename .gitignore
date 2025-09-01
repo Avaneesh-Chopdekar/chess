@@ -48,3 +48,7 @@ Thumbs.db
 out
 
 test-output
+
+# Environment Variables
+.env
+.env.local
