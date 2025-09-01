@@ -1,15 +1,34 @@
-import { betterAuth } from "better-auth";
-import { prismaAdapter } from "better-auth/adapters/prisma";
-import {PrismaClient} from "./generated/prisma";
- 
+import argon2 from 'argon2';
+import { betterAuth } from 'better-auth';
+import { prismaAdapter } from 'better-auth/adapters/prisma';
+import { PrismaClient } from './generated/prisma';
+
 const prisma = new PrismaClient();
- 
+
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
-    provider: "mongodb",
+    provider: 'mongodb',
   }),
   emailAndPassword: {
     enabled: true,
+    requireEmailVerification: false,
+    minPasswordLength: 8,
+    maxPasswordLength: 128,
+    autoSignIn: true,
+    password: {
+      hash: async (password) => {
+        try {
+          return await argon2.hash(password);
+        } catch (err) {
+          console.error('Error hashing password:', err);
+          throw err;
+        }
+      },
+      verify: async ({ hash, password }) => {
+        return await argon2.verify(hash, password);
+      },
+    },
   },
-  trustedOrigins: ["http://localhost:3000", "http://localhost:3001"],
+
+  trustedOrigins: ['http://localhost:3000', 'http://localhost:3001'],
 });
