@@ -1,14 +1,13 @@
 'use client';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { useRegisterMutation } from '@/state/users/user-api-slice';
 
 export default function SignupPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const router = useRouter();
 
   const [registerMutation, { error, isLoading }] = useRegisterMutation();
 
@@ -23,7 +22,7 @@ export default function SignupPage() {
       .unwrap()
       .then(() => {
         toast.success('User registered successfully');
-        router.push('/login');
+        redirect('/login');
       })
       .catch((error) => console.log(error));
   }

@@ -1,13 +1,12 @@
 'use client';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { useLoginMutation } from '@/state/users/user-api-slice';
 
 export default function SignupPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const router = useRouter();
 
   const [loginMutation, { error, isLoading }] = useLoginMutation();
 
@@ -24,7 +23,7 @@ export default function SignupPage() {
         toast.success('Logged in successfully');
         localStorage.setItem('accessToken', data.accessToken);
         cookieStore.set('refreshToken', data.refreshToken);
-        router.push('/');
+        redirect('/home');
       })
       .catch((error) => console.log(error));
   }
