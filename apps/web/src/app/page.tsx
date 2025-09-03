@@ -13,10 +13,10 @@ export default function LandingPage() {
       <div className="flex flex-col gap-4">
         <h1 className="text-5xl font-bold text-blue-500">Chess Game</h1>
         <Link
-          href="/game"
+          href="/login"
           className="cursor-pointer bg-blue-500 hover:bg-blue-700 active:bg-blue-900 transition-colors duration-300 text-white font-bold py-2 px-4 rounded text-center"
         >
-          Play Now
+          Get Started
         </Link>
       </div>
     </main>
