@@ -3,10 +3,13 @@ import { RefreshResponse } from '@/types/dto/refresh';
 
 export const baseQuery = fetchBaseQuery({
   baseUrl: `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1`,
-  prepareHeaders: (headers, { getState }) => {
-    const token = localStorage.getItem('accessToken'); // Or from Redux state
-    if (token) {
-      headers.set('authorization', `Bearer ${token}`);
+  prepareHeaders: async (headers, { getState }) => {
+    const accessToken = localStorage.getItem('accessToken'); // Or from Redux state
+    const refreshToken = await cookieStore.get('refreshToken');
+    const token = refreshToken?.value || '';
+    if (accessToken) {
+      headers.set('authorization', `Bearer ${accessToken}`);
+      headers.set('x-refresh-token', token);
     }
     return headers;
   },

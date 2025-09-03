@@ -2,6 +2,7 @@ import Providers from '@/components/providers';
 import './global.css';
 import { Inter } from 'next/font/google';
 import { Toaster } from 'react-hot-toast';
+import Navbar from '@/components/navbar';
 
 const fontSans = Inter({ subsets: ['latin'] });
 
@@ -22,6 +23,7 @@ export default function RootLayout({
         className={`min-h-svh h-full scroll-smooth antialiased bg-neutral-50 text-neutral-950 ${fontSans.className}`}
       >
         <Providers>
+          <Navbar />
           {children}
           <Toaster />
         </Providers>
