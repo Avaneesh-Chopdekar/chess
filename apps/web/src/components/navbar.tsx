@@ -6,6 +6,7 @@ import {
   useGetCurrentUserQuery,
 } from '@/state/users/user-api-slice';
 import { useEffect } from 'react';
+import Link from 'next/link';
 
 export default function Navbar() {
   const [logoutMutation, { isLoading, isError }] = useLogoutMutation();
@@ -66,47 +67,72 @@ export default function Navbar() {
             tabIndex={0}
             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
           >
-            <li>
-              <a>Item 1</a>
-            </li>
-            <li>
-              <a>Parent</a>
-              <ul className="p-2">
+            {currentUser ? (
+              <>
                 <li>
-                  <a>Submenu 1</a>
+                  <a>Account</a>
+                  <ul className="p-2">
+                    <li>
+                      <Link href="/profile">Profile</Link>
+                    </li>
+                    <li>
+                      <Link href="/history">History</Link>
+                    </li>
+                    <li>
+                      <Link href="/settings">Settings</Link>
+                    </li>
+                  </ul>
                 </li>
                 <li>
-                  <a>Submenu 2</a>
+                  <Link href="/live-games">Live Games</Link>
                 </li>
-              </ul>
+              </>
+            ) : null}
+            <li>
+              <Link href="/privacy">Privacy Policy</Link>
             </li>
             <li>
-              <a>Item 3</a>
+              <Link href="/terms">Terms and Conditions</Link>
             </li>
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl">Chess</a>
+        <Link
+          href={currentUser ? '/home' : '/'}
+          className="btn btn-ghost text-xl"
+        >
+          Chess
+        </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
+          {currentUser ? (
+            <>
+              <li>
+                <details>
+                  <summary>Account</summary>
+                  <ul className="p-2">
+                    <li>
+                      <Link href="/profile">Profile</Link>
+                    </li>
+                    <li>
+                      <Link href="/history">History</Link>
+                    </li>
+                    <li>
+                      <Link href="/settings">Settings</Link>
+                    </li>
+                  </ul>
+                </details>
+              </li>
+              <li>
+                <Link href="/live-games">Live Games</Link>
+              </li>
+            </>
+          ) : null}
           <li>
-            <a>Item 1</a>
+            <Link href="/privacy">Privacy Policy</Link>
           </li>
           <li>
-            <details>
-              <summary>Parent</summary>
-              <ul className="p-2">
-                <li>
-                  <a>Submenu 1</a>
-                </li>
-                <li>
-                  <a>Submenu 2</a>
-                </li>
-              </ul>
-            </details>
-          </li>
-          <li>
-            <a>Item 3</a>
+            <Link href="/terms">Terms and Conditions</Link>
           </li>
         </ul>
       </div>
