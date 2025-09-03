@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { Request, Response } from 'express';
 import { randomUUID } from 'crypto';
 import { hash, verify } from 'argon2';
@@ -33,8 +32,6 @@ export const register = async (req: Request, res: Response) => {
       password: hashedPassword,
     });
     await user.save();
-
-    console.log(`User registered: ${user}`);
 
     return res.status(201).json({
       id: user.id,

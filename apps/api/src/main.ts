@@ -3,7 +3,7 @@
  * This is only a minimal backend to get started.
  */
 
-import 'dotenv/config';
+import dotenv from 'dotenv';
 import express from 'express';
 import * as path from 'path';
 import cors from 'cors';
@@ -11,6 +11,8 @@ import { WebSocketServer } from 'ws';
 import { GameManager } from './game/manager';
 import userRouter from './user/user.router';
 import connectDB from './db';
+
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const app = express();
 
