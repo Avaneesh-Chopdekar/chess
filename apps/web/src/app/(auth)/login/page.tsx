@@ -2,13 +2,21 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { redirect } from 'next/navigation';
-import { useLoginMutation } from '@/state/users/user-api-slice';
+import {
+  useGetCurrentUserQuery,
+  useLoginMutation,
+} from '@/state/users/user-api-slice';
 
 export default function SignupPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const [loginMutation, { error, isLoading }] = useLoginMutation();
+  const { data: user } = useGetCurrentUserQuery();
+
+  if (user) {
+    redirect('/home');
+  }
 
   if (error) {
     toast.error('An error occurred. Please try again.');
