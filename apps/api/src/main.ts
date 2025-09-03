@@ -10,20 +10,17 @@ import cors from 'cors';
 import { WebSocketServer } from 'ws';
 import { GameManager } from './game/manager';
 import userRouter from './user/user.router';
+import connectDB from './db';
 
 const app = express();
+
+connectDB();
 
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 app.use(express.json());
 
-app.use(
-  cors({
-    origin: ['http://localhost:3000'],
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-    credentials: true,
-  }),
-);
+app.use(cors());
 
 app.use('/api/v1/user', userRouter);
 
