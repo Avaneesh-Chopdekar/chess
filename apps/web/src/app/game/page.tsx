@@ -1,10 +1,11 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { Chess } from "chess.js";
-import useSocket from "../../hooks/useSocket";
-import Messages from "../../utils/messages";
-import ChessBoard from "../../components/chess-board";
+import { useEffect, useState } from 'react';
+import { Chess } from 'chess.js';
+
+import useSocket from '../../hooks/useSocket';
+import Messages from '../../utils/messages';
+import ChessBoard from '../../components/chess-board';
 
 export default function GamePage() {
   const socket = useSocket();
@@ -20,17 +21,18 @@ export default function GamePage() {
       console.log(board);
       switch (message.type) {
         case Messages.INIT_GAME:
-          console.log("init game");
+          console.log('init game');
           setBoard(chess?.board());
           break;
-        case Messages.MOVE:
-          { console.log("move");
+        case Messages.MOVE: {
+          console.log('move');
           const move = message.payload;
           chess.move(move); // show user toast if invalid
           setBoard(chess.board());
-          break; }
+          break;
+        }
         case Messages.GAME_OVER:
-          console.log("game over");
+          console.log('game over');
           break;
         default:
           break;
@@ -48,14 +50,14 @@ export default function GamePage() {
         socket={socket}
         chess={chess}
       />
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 p-5 border-accent border-3">
         <button
-          className="cursor-pointer bg-blue-500 hover:bg-blue-700 active:bg-blue-900 transition-colors duration-300 text-white font-bold py-2 px-4 rounded"
+          className="btn btn-primary"
           onClick={() => {
             socket.send(
               JSON.stringify({
                 type: Messages.INIT_GAME,
-              })
+              }),
             );
           }}
         >
