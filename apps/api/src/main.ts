@@ -3,27 +3,29 @@
  * This is only a minimal backend to get started.
  */
 
+import 'dotenv/config';
 import express from 'express';
 import * as path from 'path';
-import { toNodeHandler } from "better-auth/node";
 import cors from 'cors';
 import { WebSocketServer } from 'ws';
-import { auth } from "./auth";
 import { GameManager } from './game/manager';
+import userRouter from './user/user.router';
 
 const app = express();
-
-app.all("/api/auth/*", toNodeHandler(auth));
 
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 app.use(express.json());
 
-app.use(cors({ 
-  origin: ['http://localhost:3000', 'http://localhost:3001'],
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-  credentials: true,  
-}))
+app.use(
+  cors({
+    origin: ['http://localhost:3000'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+    credentials: true,
+  }),
+);
+
+app.use('/api/v1/user', userRouter);
 
 app.get('/api/v1/health-check', (req, res) => {
   res.send({ status: 'healthy' });
@@ -36,12 +38,12 @@ const server = app.listen(port, () => {
 
 const wss = new WebSocketServer({ server });
 
-const gameManager = new GameManager()
+const gameManager = new GameManager();
 
-wss.on("connection", function connection(ws) {
+wss.on('connection', function connection(ws) {
   gameManager.addUser(ws);
 
-  ws.on("close", () => {
+  ws.on('close', () => {
     gameManager.removeUser(ws);
   });
 });
